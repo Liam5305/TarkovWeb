@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Box } from '@mui/material';
+import { flexbox } from '@mui/system';
 
 const DisplayQuestAPI = () => {
   const [barters, setBarters] = useState([]);
@@ -29,9 +31,9 @@ const DisplayQuestAPI = () => {
             }
           `,
           variables: {
-            lang: 'en', // Provide your language code here
-            limit: 10, // Provide the limit of barters to fetch
-            offset: 0 // Provide the offset if needed
+            lang: 'en',
+            limit: 10,
+            offset: 0
           }
         });
 
@@ -44,7 +46,7 @@ const DisplayQuestAPI = () => {
     };
 
     fetchData();
-  }, []); // Make sure to pass an empty dependency array to useEffect to run it only once
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -52,24 +54,38 @@ const DisplayQuestAPI = () => {
 
   return (
     <div>
-      <h2>Barters</h2>
-      <ul>
+      <div className='QuestItemBox'>
+        <Box
+          height={'100%'}
+          width={'100%'}
+          my={1}
+          display={'flex'}
+          alignItems={'left'}
+          gap={7}
+          p={1}
+          mx={0.2}
+          float={'left'}
+          flexDirection={"column"}
+          //flex-flow={"column wrap"}
+          flexWrap={'nowrap'}
+          list-style={'none'}
+          sx={{border: '2px solid grey'}}
+          >
         {barters?.map(barter => (
-          <li key={barter.id}>
-            <h3>Barter ID: {barter.id}</h3>
-            <p>Level: {barter.level}</p>
-            <p>Task Unlock: {barter.taskUnlock ? barter.taskUnlock.name : "None"}</p>
-            <h4>Required Items:</h4>
-            <ul>
-              {barter.requiredItems.map(requiredItem => (
-                <li key={requiredItem.item.id}>
-                  {requiredItem.item.name} - Quantity: {requiredItem.quantity}
-                </li>
-              ))}
-            </ul>
-          </li>
+              <li key={barter.id}>
+                <h3>Barter ID: {barter.id}</h3>
+                <p>Level: {barter.level}</p>
+                <p>Task Unlock: {barter.taskUnlock ? barter.taskUnlock.name : "None"}</p>
+                <h4>Required Items:</h4>
+                  {barter.requiredItems.map(requiredItem => (
+                    <li key={requiredItem.item.id}>
+                      {requiredItem.item.name} - Quantity: {requiredItem.quantity}
+                    </li>
+                  ))}
+              </li>
         ))}
-      </ul>
+        </Box>
+        </div>
     </div>
   );
 };
